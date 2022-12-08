@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:flutter_delivery_app/device/wifi.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:network_info_plus/network_info_plus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 void main() {
+  final networkIp = NetworkIp();
+
   test('NetworkInterface Find Wi-Fi', () async {
     List<NetworkInterface> networkInterface = await NetworkInterface.list();
     for (NetworkInterface interface in networkInterface) {

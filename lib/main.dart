@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_delivery_app/user/view/login_screen.dart';
+import 'package:flutter_delivery_app/common/view/splash_screen.dart';
+import 'package:get_it/get_it.dart';
 
-void main() {
+import 'device/wifi.dart';
+
+void main(){
+  final networkIp = NetworkIp();
+  GetIt.I.registerSingleton<NetworkIp>(networkIp);
+
   runApp(
-    _App(),
+    const _App(),
   );
 }
 
@@ -17,7 +23,7 @@ class _App extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),
-      home: LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }
