@@ -39,16 +39,6 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '코팩 딜리버리',
-      child: TabBarView(
-        physics: NeverScrollableScrollPhysics(),
-        controller: controller,
-        children: [
-          RestaurantScreen(),
-          Center(child: Container(child: Text('음식'))),
-          Center(child: Container(child: Text('주문'))),
-          Center(child: Container(child: Text('프로필'))),
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMARY_COLOR,
         unselectedItemColor: BODY_TEXT_COLOR,
@@ -82,6 +72,16 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
             icon: Icon(Icons.person_outlined),
             label: '프로필',
           ),
+        ],
+      ),
+      child: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: controller,
+        children: const [
+          RestaurantScreen(),
+          Center(child: Text('음식')),
+          Center(child: Text('주문')),
+          Center(child: Text('프로필')),
         ],
       ),
     );
