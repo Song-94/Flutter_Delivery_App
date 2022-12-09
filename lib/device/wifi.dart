@@ -3,7 +3,7 @@ import 'dart:io';
 // localhost of emulator(android) & simulator(ios)
 const emulatorIp = '10.0.2.2:3000';
 const simulatorIp = '127.0.0.1:3000';
-const notebookIp = '192.168.0.108';
+const notebookIp = '192.168.0.11:3000';
 
 class NetworkIp {
   NetworkIp() {
@@ -11,23 +11,27 @@ class NetworkIp {
   }
 
   String? platformIp;
-  String? wifiIp = notebookIp;
+  String? wifiIp;
 
   String? get ip {
     return wifiIp ?? platformIp;
   }
 
-  void getIpWiFi() async {
+  Future<void> getIpWiFi() async {
+    wifiIp = notebookIp;
+    return;
+
     // notebook Wi-Fi , phone : wlan0
     List<NetworkInterface> networkInterface = await NetworkInterface.list();
     for (NetworkInterface interface in networkInterface) {
       if (interface.name == 'wlan0') {
-        wifiIp = interface.addresses.first.address;
+        wifiIp = '${interface.addresses.first.address}:3000';
+        print('IP : $wifiIp');
       }
     }
   }
 
-  void wifiList() async {
+  void testWiFiList() async {
     for (var interface in await NetworkInterface.list()) {
       print('== Interface: ${interface.name} ==');
       for (var addr in interface.addresses) {

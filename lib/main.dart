@@ -4,9 +4,10 @@ import 'package:get_it/get_it.dart';
 
 import 'device/wifi.dart';
 
-void main(){
+void main() async {
   final networkIp = NetworkIp();
   GetIt.I.registerSingleton<NetworkIp>(networkIp);
+  await GetIt.I<NetworkIp>().getIpWiFi();
 
   runApp(
     const _App(),

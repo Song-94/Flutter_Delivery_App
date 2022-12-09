@@ -18,8 +18,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  String _username = '';
-  String _password = '';
+  // TEST ID,FW
+  String _username = 'test@codefactory.ai';
+  String _password = 'testtest';
 
   @override
   Widget build(BuildContext context) {
@@ -85,6 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     final refreshToken = resp.data['refreshToken'];
                     final accessToken = resp.data['accessToken'];
 
+                    print('REFRESH: $refreshToken');
+                    print('ACCESS : $accessToken');
+
                     await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
                     await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
 
@@ -105,6 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 TextButton(
                   onPressed: () async {
+
                   },
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,

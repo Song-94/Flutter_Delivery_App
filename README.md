@@ -7,6 +7,8 @@
 2. flutter_secure_storage
 - https://pub.dev/packages/flutter_secure_storage
 - android\app\build.gradle: minSdkVersion 18
+3. unicode center dot
+- ·
 
 # Sites
 1. Base64 Encoder
