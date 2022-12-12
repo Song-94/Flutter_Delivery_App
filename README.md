@@ -1,7 +1,6 @@
 # flutter_delivery_app
 
 # tips
-
 1. misc 의미 (miscellaneous)
 - 기타, 여러가지 잡다한
 2. flutter_secure_storage
@@ -9,7 +8,25 @@
 - android\app\build.gradle: minSdkVersion 18
 3. unicode center dot
 - ·
-
+4. http error 404
+- url 을 다시 한번 확인해본다.
+5. Pagination
+- Page Based Pagination
+  - 페이지 기준으로 데이터를 잘라서 요청하는 Pagination
+  - 요청을 보낼때 원하는 데이터 갯수와 몇번째 페이지를 가져올지 명시
+  - 페이지 숫자를 누르면 다음 페이지로 넘어가는 형태의 UI에서 많이 사용
+  - Pagination 도중에 데이터베이스에서 데이터가 추가되거나 삭제될경우
+    저장되는 데이터가 누락되거나 중복될 수 있음
+  - Pagination 알고리즘이 매우 간단함
+- Cursor Based Pagination
+  - 가장 최근에 가져온 데이터를 기준으로 다음 데이터를 가져오는 Pagination
+  - 요청을 보낼때 마지막 데이터의 기준값(ID등 Unique 값)과 
+    몇개의 데이터를 가져올지 명시
+  - 스크롤 형태의 리스트에서 자주 사용
+    예) 앱의 ListView
+  - 최근 데이터의 기준값을 기반으로 쿼리가 작성되기때문에 데이터가 누락되거나 
+    중복될 확률이 적음
+  
 # Sites
 1. Base64 Encoder
 - https://www.base64encode.org/

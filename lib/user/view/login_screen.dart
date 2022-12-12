@@ -68,7 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () async {
                     // ID:비밀번호
                     final rawString = '$_username:$_password';
-                    print('press elevated button.');
+                    print('press elevated button. [info:($ip)($_username:$_password)]');
 
                     Codec<String, String> stringToBase64 = utf8.fuse(base64);
 

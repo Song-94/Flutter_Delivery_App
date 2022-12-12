@@ -3,7 +3,7 @@ import 'dart:io';
 // localhost of emulator(android) & simulator(ios)
 const emulatorIp = '10.0.2.2:3000';
 const simulatorIp = '127.0.0.1:3000';
-const notebookIp = '192.168.0.11:3000';
+const notebookIp = '192.168.0.20:3000';
 
 class NetworkIp {
   NetworkIp() {
@@ -18,7 +18,9 @@ class NetworkIp {
   }
 
   Future<void> getIpWiFi() async {
+    await Future.delayed(const Duration(milliseconds: 300));
     wifiIp = notebookIp;
+    print('NetworkIP : $wifiIp');
     return;
 
     // notebook Wi-Fi , phone : wlan0

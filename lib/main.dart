@@ -8,7 +8,7 @@ void main() async {
   final networkIp = NetworkIp();
   GetIt.I.registerSingleton<NetworkIp>(networkIp);
   await GetIt.I<NetworkIp>().getIpWiFi();
-
+  print('main : ${GetIt.I<NetworkIp>().ip}');
   runApp(
     const _App(),
   );
