@@ -26,13 +26,28 @@
     예) 앱의 ListView
   - 최근 데이터의 기준값을 기반으로 쿼리가 작성되기때문에 데이터가 누락되거나 
     중복될 확률이 적음
-  
+6. FutureBuilder에서 future 함수 중복 호출 방지
+- https://landroid.tistory.com/16
+7. enum.firstWhere
+<pre>
+<code>
+  final numbers = <>[1, 2, 3, 5, 6, 7];
+  var result = numbers.firstWhere((element) => element < 5); // 1
+  result = numbers.firstWhere((element) => element > 5); // 6
+</code>
+</pre>
+
 # Sites
 1. Base64 Encoder
 - https://www.base64encode.org/
 2. JWT (JSON Web Tokens) decode
 - https://jwt.io/
-
+3. BoxFit of Image widget
+- https://devmg.tistory.com/181
+4. design pattern
+- https://brunch.co.kr/@oemilk/113
+5. extends / implements
+- https://wooono.tistory.com/261
 # Sever Test ID/PW
 1. id              : ai
 2. pw              : testtest
@@ -55,7 +70,40 @@
 2. await 키워드를 사용하면 일반 비동기 처리처럼 바로 실행이 다음 라인으로 넘어가는 것이 아니라 
    결과값을 얻을 수 있을 때까지 기다려줍니다.
 
-#images link
+# factory Class
+- 현재 클래스의 인스턴스 뿐만 아니라 
+  상속하고 있는 클래스도 인스턴스화 해서 반환 할 수 있다.
+<pre>
+<code>
+void main() {
+  final parent = Parent(id:1);
+  final child = Child(id:3);
+  final child2 = Parent.fromInt(2);
+  print(parent);  // Instance of 'Parent'
+  print(child);   // Instance of 'Child'
+  print(child2);  // Instance of 'Child'
+}
+
+class Parent {
+  final int id;
+  Parent({
+    required this.id,
+  });
+
+  factory Parent.fromInt(int id) {
+    return Child(id: id);
+  }
+}
+
+class Child extends Parent {
+  Child({
+    required super.id,
+  });
+}
+</code>
+</pre>
+
+# images link
 - https://pixabay.com/ko/vectors/%ea%b8%b0%eb%a6%b0-%ec%95%84%ed%94%84%eb%a6%ac%ec%b9%b4-%ec%9b%90%ec%a0%95-%ec%97%ac%ed%96%89-308963/
 - https://pixabay.com/ko/vectors/%ea%b8%b0%eb%a6%b0-%ec%96%bc%ea%b5%b4-%eb%a8%b8%eb%a6%ac-%ec%b4%88%ec%83%81%ed%99%94-38209/
 - https://pixabay.com/ko/vectors/%ea%b8%b0%eb%a6%b0-%ec%a3%bc%ed%99%a9%ec%83%89-%eb%a8%b8%eb%a6%ac-%eb%a7%8c%ed%99%94-%ec%9b%90-306478/

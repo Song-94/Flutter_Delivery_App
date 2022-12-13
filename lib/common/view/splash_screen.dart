@@ -17,20 +17,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    // initState 는 await 불가능.
-    super.initState();
-
-    deletedToken();
-    checkToken();
-  }
-
-  void deletedToken() async {
+  Future<void> deletedToken() async {
     await storage.deleteAll();
   }
 
-  void checkToken() async {
+  Future<void> checkToken() async {
     // refreshToken valid until 1day.
     // accessToken valid until 5min.
 
@@ -81,26 +72,36 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  Future<void> setupToken() async {
+    await deletedToken();
+    await checkToken();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultLayout(
-      backgroundColor: PRIMARY_COLOR,
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'asset/img/logo/logo.svg',
-              width: MediaQuery.of(context).size.width / 2,
+    return FutureBuilder(
+      future: setupToken(),
+      builder: (_, snapshot) {
+        return DefaultLayout(
+          backgroundColor: PRIMARY_COLOR,
+          child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'asset/img/logo/logo.svg',
+                  width: MediaQuery.of(context).size.width / 2,
+                ),
+                const SizedBox(height: 32.0),
+                const CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              ],
             ),
-            const SizedBox(height: 32.0),
-            const CircularProgressIndicator(
-              color: Colors.white,
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }
