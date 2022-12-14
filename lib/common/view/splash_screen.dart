@@ -7,7 +7,6 @@ import 'package:flutter_delivery_app/common/view/root_tab.dart';
 import 'package:flutter_delivery_app/device/wifi.dart';
 import 'package:flutter_delivery_app/user/view/login_screen.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -29,7 +28,6 @@ class _SplashScreenState extends State<SplashScreen> {
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
     final dio = Dio();
-    final ip = GetIt.I<NetworkIp>().ip;
 
     try {
       // normal process.

@@ -8,7 +8,6 @@ import 'package:flutter_delivery_app/common/const/data.dart';
 import 'package:flutter_delivery_app/common/layout/default_layout.dart';
 import 'package:flutter_delivery_app/common/view/root_tab.dart';
 import 'package:flutter_delivery_app/device/wifi.dart';
-import 'package:get_it/get_it.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -25,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final dio = Dio();
-    final ip = GetIt.I<NetworkIp>().ip;
 
     return DefaultLayout(
       child: SingleChildScrollView(
@@ -68,7 +66,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () async {
                     // ID:비밀번호
                     final rawString = '$_username:$_password';
-                    print('press elevated button. [info:($ip)($_username:$_password)]');
+                    print(
+                        'press elevated button. [info:($ip)($_username:$_password)]');
 
                     Codec<String, String> stringToBase64 = utf8.fuse(base64);
 
@@ -89,8 +88,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     print('REFRESH: $refreshToken');
                     print('ACCESS : $accessToken');
 
-                    await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
-                    await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+                    await storage.write(
+                        key: REFRESH_TOKEN_KEY, value: refreshToken);
+                    await storage.write(
+                        key: ACCESS_TOKEN_KEY, value: accessToken);
 
                     setState(() {
                       Navigator.of(context).push(
@@ -108,9 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 TextButton(
-                  onPressed: () async {
-
-                  },
+                  onPressed: () async {},
                   style: TextButton.styleFrom(
                     backgroundColor: Colors.white,
                   ),

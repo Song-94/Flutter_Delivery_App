@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery_app/common/view/splash_screen.dart';
-import 'package:get_it/get_it.dart';
-
-import 'device/wifi.dart';
 
 void main() async {
-  final networkIp = NetworkIp();
-  GetIt.I.registerSingleton<NetworkIp>(networkIp);
-  await GetIt.I<NetworkIp>().getIpWiFi();
-  print('main : ${GetIt.I<NetworkIp>().ip}');
+  // final networkIp = NetworkIp();
+  // GetIt.I.registerSingleton<NetworkIp>(networkIp);
+  // await GetIt.I<NetworkIp>().getIpWiFi();
+
   runApp(
     const _App(),
   );
