@@ -1,5 +1,13 @@
 # flutter_delivery_app
 
+# Android studio 
+1. File Nesting
+- 프로젝트 옆 설정 버튼을 눌러 File Nesting 하여 '.g.dart' 을
+  추가하면 프로젝트에서 파일을 볼 때 .g.dart 해당 파일을 같은 이름을
+  지닌 해당 dart 파일 밑으로 숨길 수 있다.
+2. Dart Josn Serialization Generator
+- Generate Plugin about json_serialize
+
 # tips
 1. misc 의미 (miscellaneous)
 - 기타, 여러가지 잡다한
@@ -37,6 +45,11 @@
 </code>
 </pre>
 
+# Code Generation
+- flutter pub run build_runner (cmd)
+- (cmd = build) : 1회성 실행 
+- (cmd = watch) : 프로젝트에서 파일 변경을 바라봄
+
 # Sites
 1. Base64 Encoder
 - https://www.base64encode.org/
@@ -50,6 +63,8 @@
 - https://wooono.tistory.com/261
 6. POSTMAN settings of environment value 
 - https://inpa.tistory.com/entry/POSTMAN-%F0%9F%92%BD-%ED%8F%AC%EC%8A%A4%ED%8A%B8%EB%A7%A8-%EB%B3%80%EC%88%98-%EC%82%AC%EC%9A%A9-%EB%B0%A9%EB%B2%95-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EC%A0%84%EC%97%AD-%EB%B3%80%EC%88%98#:~:text=%EB%8B%A4%EB%A4%84%20%EB%B3%BC%20%EA%B2%83%EC%9D%B4%EB%8B%A4.-,%ED%8F%AC%EC%8A%A4%ED%8A%B8%EB%A7%A8%20%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98%20(environment),%EB%B3%B5%EC%A0%9C%2C%20%EB%82%B4%EB%B3%B4%EB%82%B4%EA%B8%B0%20%EB%93%B1%EC%9D%B4%20%EC%89%BD%EB%8B%A4.
+7. Equatable &  Immutable
+- https://blog.codefactory.ai/flutter/equatable/
 
 # Sever Test ID/PW
 1. id              : ai

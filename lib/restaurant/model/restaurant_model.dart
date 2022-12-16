@@ -1,18 +1,21 @@
-import 'package:flutter_delivery_app/common/const/restaurant.dart';
-import 'package:flutter_delivery_app/common/model/model_with_id.dart';
+import 'package:flutter_delivery_app/common/const/restaurant_price.dart';
 import 'package:flutter_delivery_app/common/utils/data_utils.dart';
+
 import 'package:json_annotation/json_annotation.dart';
 
 part 'restaurant_model.g.dart';
 
 @JsonSerializable()
-class RestaurantModel implements IModelWithId {
+class RestaurantModel {
   final String id;
   final String name;
+
   @JsonKey(
+    // fromJson 함수 실행 시 실행 할 함수 지정.
     fromJson: DataUtils.pathToUrl,
   )
   final String thumbUrl;
+
   final List<String> tags;
   final RestaurantPriceRange priceRange;
   final double ratings;
@@ -34,6 +37,4 @@ class RestaurantModel implements IModelWithId {
 
   factory RestaurantModel.fromJson(Map<String, dynamic> json) =>
       _$RestaurantModelFromJson(json);
-
-  Map<String, dynamic> toJson() => _$RestaurantModelToJson(this);
 }

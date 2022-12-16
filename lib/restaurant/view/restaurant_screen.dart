@@ -6,24 +6,17 @@ import 'package:flutter_delivery_app/restaurant/component/restaurant_card.dart';
 import 'package:flutter_delivery_app/restaurant/model/restaurant_model.dart';
 import 'package:flutter_delivery_app/restaurant/view/restaurant_detail.screen.dart';
 
-class RestaurantScreen extends StatefulWidget {
+class RestaurantScreen extends StatelessWidget {
   const RestaurantScreen({
     Key? key,
   }) : super(key: key);
 
-  @override
-  State<RestaurantScreen> createState() => _RestaurantScreenState();
-}
-
-class _RestaurantScreenState extends State<RestaurantScreen> {
-  late Future<List> paginateRestaurant;
-
-  Future<List> _paginateRestaurant() async {
+  Future<List> paginateRestaurant() async {
     final dio = Dio();
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+    final query = 'http://$ip/restaurant';
 
-    String query = 'http://$notebookIp/restaurant';
-    print('query : $query');
+    print('dio get : $query');
 
     final resp = await dio.get(
       query,
@@ -33,16 +26,8 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
         },
       ),
     );
-
-    // JsonData List return.
+    // JsonData (Restaurant List) return.
     return resp.data['data'];
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    paginateRestaurant = _paginateRestaurant();
-    super.initState();
   }
 
   @override
@@ -53,7 +38,7 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
       ),
       child: Center(
         child: FutureBuilder<List>(
-          future: paginateRestaurant,
+          future: paginateRestaurant(),
           builder: (context, AsyncSnapshot<List> snapshot) {
             print('snapshot err : ${snapshot.error}');
             print('snapshot data : ${snapshot.data}'); // Json List.
@@ -64,24 +49,24 @@ class _RestaurantScreenState extends State<RestaurantScreen> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final models = snapshot.data!.map((jsonData) {
+            final restaurants = snapshot.data!.map((jsonData) {
               return RestaurantModel.fromJson(jsonData);
             }).toList();
 
             return ListView.separated(
-              itemCount: models.length,
+              itemCount: restaurants.length,
               itemBuilder: (_, index) => GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (_) => RestaurantDetailScreen(
-                        id: models[index].id,
+                        id: restaurants[index].id,
                       ),
                     ),
                   );
                 },
                 child: RestaurantCard.fromModel(
-                  model: models[index],
+                  model: restaurants[index],
                 ),
               ),
               separatorBuilder: (_, index) {

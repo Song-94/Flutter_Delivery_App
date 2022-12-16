@@ -3,7 +3,7 @@ import 'dart:io';
 // localhost of emulator(android) & simulator(ios)
 const emulatorIp = '10.0.2.2:3000';
 const simulatorIp = '127.0.0.1:3000';
-const notebookIp = '192.168.0.3:3000';
+const notebookIp = '192.168.0.4:3000';
 final ip = notebookIp ?? (Platform.isIOS ? simulatorIp : emulatorIp);
 
 class NetworkIp {

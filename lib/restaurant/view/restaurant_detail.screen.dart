@@ -5,6 +5,8 @@ import 'package:flutter_delivery_app/common/layout/default_layout.dart';
 import 'package:flutter_delivery_app/device/wifi.dart';
 import 'package:flutter_delivery_app/product/component/product_card.dart';
 import 'package:flutter_delivery_app/restaurant/component/restaurant_card.dart';
+import 'package:flutter_delivery_app/restaurant/model/restaurant_detail_model.dart';
+import 'package:flutter_delivery_app/restaurant/model/restaurant_product_model.dart';
 
 class RestaurantDetailScreen extends StatelessWidget {
   final String id;
@@ -17,9 +19,12 @@ class RestaurantDetailScreen extends StatelessWidget {
   Future getRestaurantDetail() async {
     final dio = Dio();
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+    final query = 'http://$ip/restaurant/$id';
+
+    print('dio get : $query');
 
     final resp = await dio.get(
-      'http://$ip/restaurant/$id}',
+      query,
       options: Options(
         headers: {
           'authorization': 'Bearer $accessToken',
@@ -27,7 +32,8 @@ class RestaurantDetailScreen extends StatelessWidget {
       ),
     );
 
-    return resp;
+    // .data :Body of Json
+    return resp.data;
   }
 
   @override
@@ -37,12 +43,23 @@ class RestaurantDetailScreen extends StatelessWidget {
         child: FutureBuilder(
           future: getRestaurantDetail(),
           builder: (BuildContext _, AsyncSnapshot snapshot) {
-            print(snapshot.data);
+            print('snapshot err : ${snapshot.error}');
+            print('snapshot data : ${snapshot.data}'); // Json List.
+
+            if (!(snapshot.hasData) ||
+                snapshot.connectionState != ConnectionState.done) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            final detailModel = RestaurantDetailModel.fromJson(snapshot.data);
+
+            print('detail model : $detailModel');
+
             return CustomScrollView(
               slivers: [
                 renderTop(),
                 renderLabel(),
-                renderProducts(),
+                renderProducts(products: detailModel.products),
               ],
             );
           },
@@ -64,18 +81,21 @@ class RestaurantDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget renderProducts() {
+  Widget renderProducts({
+    required List<RestaurantProductModel> products,
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            return const Padding(
-              padding: EdgeInsets.only(top: 16.0),
-              child: ProductCard(),
+            final model = products[index];
+            return Padding(
+              padding: const EdgeInsets.only(top: 16.0),
+              child: ProductCard.fromModel(model: model),
             );
           },
-          childCount: 10,
+          childCount: products.length,
         ),
       ),
     );

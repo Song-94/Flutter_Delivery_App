@@ -1,8 +1,11 @@
-import 'package:flutter_delivery_app/common/utils/data_utils.dart';
-import 'package:flutter_delivery_app/restaurant/model/restaurant_model.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:flutter_delivery_app/common/const/restaurant_price.dart';
 
-import '../../common/const/restaurant.dart';
+import 'package:flutter_delivery_app/common/utils/data_utils.dart';
+
+import 'package:flutter_delivery_app/restaurant/model/restaurant_model.dart';
+import 'package:flutter_delivery_app/restaurant/model/restaurant_product_model.dart';
+
+import 'package:json_annotation/json_annotation.dart';
 
 part 'restaurant_detail_model.g.dart';
 
@@ -25,29 +28,6 @@ class RestaurantDetailModel extends RestaurantModel {
     required this.products,
   });
 
-  factory RestaurantDetailModel.fromJson(Map<String, dynamic> json) =>
+  factory RestaurantDetailModel.fromJson(json) =>
       _$RestaurantDetailModelFromJson(json);
-}
-
-@JsonSerializable()
-class RestaurantProductModel {
-  final String id;
-  final String name;
-  @JsonKey(
-    fromJson: DataUtils.pathToUrl,
-  )
-  final String imgUrl;
-  final String detail;
-  final int price;
-
-  RestaurantProductModel({
-    required this.id,
-    required this.name,
-    required this.imgUrl,
-    required this.detail,
-    required this.price,
-  });
-
-  factory RestaurantProductModel.fromJson(Map<String, dynamic> json) =>
-      _$RestaurantProductModelFromJson(json);
 }
