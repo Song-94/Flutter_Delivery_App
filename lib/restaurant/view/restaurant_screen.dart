@@ -11,7 +11,7 @@ class RestaurantScreen extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Future<List> paginateRestaurant() async {
+  Future<Map<String, dynamic>> paginateRestaurant() async {
     final dio = Dio();
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
     final query = 'http://$ip/restaurant';
@@ -26,8 +26,8 @@ class RestaurantScreen extends StatelessWidget {
         },
       ),
     );
-    // JsonData (Restaurant List) return.
-    return resp.data['data'];
+    // Json Key ['meta', 'data']
+    return resp.data; // .data mean body of json.
   }
 
   @override
@@ -37,9 +37,10 @@ class RestaurantScreen extends StatelessWidget {
         horizontal: 16.0,
       ),
       child: Center(
-        child: FutureBuilder<List>(
+        child: FutureBuilder<Map<String, dynamic>>(
           future: paginateRestaurant(),
-          builder: (context, AsyncSnapshot<List> snapshot) {
+          builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+
             print('snapshot err : ${snapshot.error}');
             print('snapshot data : ${snapshot.data}'); // Json List.
             // snapshot.data[index][key]
@@ -49,7 +50,9 @@ class RestaurantScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final restaurants = snapshot.data!.map((jsonData) {
+            final jsonRestaurants = snapshot.data!['data'];
+
+            final restaurants = jsonRestaurants.map((jsonData) {
               return RestaurantModel.fromJson(jsonData);
             }).toList();
 
