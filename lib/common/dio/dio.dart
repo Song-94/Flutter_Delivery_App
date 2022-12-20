@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_delivery_app/common/const/data.dart';
+import 'package:flutter_delivery_app/device/wifi.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class CustomInterceptor extends Interceptor {
@@ -60,6 +61,10 @@ class CustomInterceptor extends Interceptor {
     Response response,
     ResponseInterceptorHandler handler,
   ) {
+    print('[RES]\n'
+        'method: ${response.requestOptions.method}\n'
+        'uri: ${response.requestOptions.uri}\n'
+        'headers: ${response.requestOptions.headers}\n');
     super.onResponse(response, handler);
   }
 
@@ -79,9 +84,42 @@ class CustomInterceptor extends Interceptor {
 
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
 
+    // refreshToken 아예 없으면
+    // 당연히 에러를 던진다.
     if (refreshToken == null) {
       return handler.reject(err);
     }
-    super.onError(err, handler);
+
+    final isStatus401 = err.response?.statusCode == 401;
+    final isPathRefresh = err.requestOptions.path == '/auth/token';
+
+    if (isStatus401 && !isPathRefresh) {
+      final dio = Dio();
+      try {
+        final resp = await dio.post(
+          'http://$ip/auth/token',
+          options: Options(
+            headers: {
+              'authorization': 'Bearer $refreshToken',
+            },
+          ),
+        );
+
+        final accessToken = resp.data['accessToken'];
+        final options = err.requestOptions;
+
+        // 토큰 최신 업데이트.
+        options.headers.addAll({'authorization': 'Bearer $accessToken'});
+
+        await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
+
+        // 요청 재전송
+        final response = await dio.fetch(options);
+
+        return handler.resolve(response);
+      } on DioError catch (e) {
+        return handler.reject(err);
+      }
+    }
   }
 }

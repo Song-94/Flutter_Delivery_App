@@ -5,7 +5,7 @@
 - 프로젝트 옆 설정 버튼을 눌러 File Nesting 하여 '.g.dart' 을
   추가하면 프로젝트에서 파일을 볼 때 .g.dart 해당 파일을 같은 이름을
   지닌 해당 dart 파일 밑으로 숨길 수 있다.
-2. Dart Josn Serialization Generator
+2. Dart Json Serialization Generator
 - Generate Plugin about json_serialize
 
 # tips
@@ -129,3 +129,31 @@ class Child extends Parent {
 # Server Errors
 1. 401 : Token 문제.
 2. 404 : 잘못된 Url
+
+# 클래스(class), 객체(object), 인스턴스(instance) 차이
+클래스란 객체를 정의하고 만들어 내기 위한 설계도 혹은 틀을 말한다.
+클래스 안에는 객체를 만들어내기 위해 필요한 변수와 메서드들이 존재한다.
+객체란 클래스에 선언된 모양 그대로 생성된 실체를 말하며 '클래스의 인스턴스'라고 부른다.
+인스턴스란 클래스를 통해서 구현해야할 대상(객체)이 실제로 구현된 구체적인 실체를 말한다.
+예를들어 붕어빵을 만든다고 상황을 가정해보자. 
+여기서 클래스는 붕어빵을 만들기 위한 틀이 되고 객체는 붕어빵이다. 
+그리고 인스턴스는 붕어빵 틀로 찍어낸 각각의 붕어빵이다.
+팥붕어빵과 슈크림붕어빵은 같은 타입의 객체이지만, 인스턴스 관점으로 보았을 때는 다르다.
+
+# JsonSerializable options.
+const JsonSerializable({
+  @Deprecated('Has no effect') bool? nullable,
+  this.anyMap,
+  this.checked,
+  this.constructor,
+  this.createFieldMap,
+  this.createFactory,
+  this.createToJson,
+  this.disallowUnrecognizedKeys,
+  this.explicitToJson,
+  this.fieldRename,
+  this.ignoreUnannotated,
+  this.includeIfNull,
+  this.converters,
+  this.genericArgumentFactories,
+});

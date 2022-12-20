@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> setupToken() async {
-    await deletedToken();
+    // await deletedToken();
     await checkToken();
   }
 

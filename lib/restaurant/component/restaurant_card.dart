@@ -46,6 +46,7 @@ class RestaurantCard extends StatelessWidget {
   factory RestaurantCard.fromModel({
     required RestaurantModel model,
     bool isDetail = false,
+    String? detail,
   }) {
 
     print('restaurant card : ${model.thumbUrl}');
@@ -63,6 +64,7 @@ class RestaurantCard extends StatelessWidget {
       deliveryTime: model.deliveryTime,
       deliveryFee: model.deliveryFee,
       ratings: model.ratings,
+      detail: detail,
       isDetail: isDetail,
     );
   }
