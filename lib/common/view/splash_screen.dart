@@ -3,26 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_delivery_app/common/const/colors.dart';
 import 'package:flutter_delivery_app/common/const/data.dart';
 import 'package:flutter_delivery_app/common/layout/default_layout.dart';
+import 'package:flutter_delivery_app/common/secure_storage/secure_storage.dart';
 import 'package:flutter_delivery_app/common/view/root_tab.dart';
 import 'package:flutter_delivery_app/device/wifi.dart';
 import 'package:flutter_delivery_app/user/view/login_screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends ConsumerState<SplashScreen> {
   Future<void> deletedToken() async {
+    final storage = ref.read(secureStorageProvider);
+
     await storage.deleteAll();
   }
 
   Future<void> checkToken() async {
     // refreshToken valid until 1day.
     // accessToken valid until 5min.
+    final storage = ref.read(secureStorageProvider);
 
     final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);

@@ -6,17 +6,21 @@ import 'package:flutter_delivery_app/common/component/custom_text_form_field.dar
 import 'package:flutter_delivery_app/common/const/colors.dart';
 import 'package:flutter_delivery_app/common/const/data.dart';
 import 'package:flutter_delivery_app/common/layout/default_layout.dart';
+import 'package:flutter_delivery_app/common/secure_storage/secure_storage.dart';
 import 'package:flutter_delivery_app/common/view/root_tab.dart';
 import 'package:flutter_delivery_app/device/wifi.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends ConsumerStatefulWidget {
+  const LoginScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   // TEST ID,FW
   String _username = 'test@codefactory.ai';
   String _password = 'testtest';
@@ -87,6 +91,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     print('REFRESH: $refreshToken');
                     print('ACCESS : $accessToken');
+
+                    final storage = ref.read(secureStorageProvider);
 
                     await storage.write(
                         key: REFRESH_TOKEN_KEY, value: refreshToken);

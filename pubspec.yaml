@@ -46,7 +46,7 @@ dependencies:
   freezed_annotation: ^2.2.0
   json_annotation: ^4.7.0
   retrofit: '>=3.0.0 <4.0.0'
-  logger: any  #for logging purpose
+  flutter_riverpod: ^2.1.1
 
 # 빌드 할 때, 또는 개발 할때만 필요한 것.
 dev_dependencies:

@@ -65,6 +65,8 @@
 - https://inpa.tistory.com/entry/POSTMAN-%F0%9F%92%BD-%ED%8F%AC%EC%8A%A4%ED%8A%B8%EB%A7%A8-%EB%B3%80%EC%88%98-%EC%82%AC%EC%9A%A9-%EB%B0%A9%EB%B2%95-%ED%99%98%EA%B2%BD-%EB%B3%80%EC%88%98-%EC%A0%84%EC%97%AD-%EB%B3%80%EC%88%98#:~:text=%EB%8B%A4%EB%A4%84%20%EB%B3%BC%20%EA%B2%83%EC%9D%B4%EB%8B%A4.-,%ED%8F%AC%EC%8A%A4%ED%8A%B8%EB%A7%A8%20%ED%99%98%EA%B2%BD%EB%B3%80%EC%88%98%20(environment),%EB%B3%B5%EC%A0%9C%2C%20%EB%82%B4%EB%B3%B4%EB%82%B4%EA%B8%B0%20%EB%93%B1%EC%9D%B4%20%EC%89%BD%EB%8B%A4.
 7. Equatable &  Immutable
 - https://blog.codefactory.ai/flutter/equatable/
+8. Dependency Injection (DI)
+- https://mangkyu.tistory.com/150
 
 # Sever Test ID/PW
 1. id              : ai

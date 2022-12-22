@@ -1,17 +1,16 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_delivery_app/common/const/data.dart';
 import 'package:flutter_delivery_app/common/dio/dio.dart';
 import 'package:flutter_delivery_app/common/layout/default_layout.dart';
 import 'package:flutter_delivery_app/device/wifi.dart';
 import 'package:flutter_delivery_app/product/component/product_card.dart';
 import 'package:flutter_delivery_app/restaurant/component/restaurant_card.dart';
 import 'package:flutter_delivery_app/restaurant/model/restaurant_detail_model.dart';
-import 'package:flutter_delivery_app/restaurant/model/restaurant_model.dart';
 import 'package:flutter_delivery_app/restaurant/model/restaurant_product_model.dart';
 import 'package:flutter_delivery_app/restaurant/repository/restaurant_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RestaurantDetailScreen extends StatelessWidget {
+class RestaurantDetailScreen extends ConsumerWidget {
   final String id;
 
   const RestaurantDetailScreen({
@@ -19,13 +18,8 @@ class RestaurantDetailScreen extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  Future<RestaurantDetailModel> getRestaurantDetail() async {
-    final dio = Dio();
-    dio.interceptors.add(
-      CustomInterceptor(
-        storage: storage,
-      ),
-    );
+  Future<RestaurantDetailModel> getRestaurantDetail(WidgetRef ref) async {
+    final dio = ref.watch(dioProvider);
 
     final repository =
         RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
@@ -34,11 +28,14 @@ class RestaurantDetailScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+    WidgetRef ref,
+  ) {
     return DefaultLayout(
         title: '불타는 떡볶이',
         child: FutureBuilder<RestaurantDetailModel>(
-          future: getRestaurantDetail(),
+          future: getRestaurantDetail(ref),
           builder: (_, AsyncSnapshot<RestaurantDetailModel> snapshot) {
             if (snapshot.hasError) {
               print(snapshot.error.toString());
@@ -50,7 +47,9 @@ class RestaurantDetailScreen extends StatelessWidget {
 
             return CustomScrollView(
               slivers: [
-                renderTop(model: snapshot.data!, ),
+                renderTop(
+                  model: snapshot.data!,
+                ),
                 renderLabel(),
                 renderProducts(products: snapshot.data!.products),
               ],

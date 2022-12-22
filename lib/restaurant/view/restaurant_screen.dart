@@ -8,21 +8,15 @@ import 'package:flutter_delivery_app/restaurant/component/restaurant_card.dart';
 import 'package:flutter_delivery_app/restaurant/model/restaurant_model.dart';
 import 'package:flutter_delivery_app/restaurant/repository/restaurant_repository.dart';
 import 'package:flutter_delivery_app/restaurant/view/restaurant_detail.screen.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class RestaurantScreen extends StatelessWidget {
+class RestaurantScreen extends ConsumerWidget {
   const RestaurantScreen({
     Key? key,
   }) : super(key: key);
 
-  Future<List<RestaurantModel>> paginateRestaurant() async {
-    final dio = Dio();
-    final query = 'http://$ip/restaurant';
-
-    print('dio get : $query');
-
-    dio.interceptors.add(
-      CustomInterceptor(storage: storage),
-    );
+  Future<List<RestaurantModel>> paginateRestaurant(WidgetRef ref) async {
+    final dio = ref.watch(dioProvider);
 
     CursorPagination<RestaurantModel> resp = await RestaurantRepository(
       dio,
@@ -34,13 +28,13 @@ class RestaurantScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       child: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: FutureBuilder<List<RestaurantModel>>(
-            future: paginateRestaurant(),
+            future: paginateRestaurant(ref),
             builder: (context, AsyncSnapshot<List<RestaurantModel>> snapshot) {
               print('snapshot err : ${snapshot.error}');
               print('snapshot data : ${snapshot.data}'); // Json List.
