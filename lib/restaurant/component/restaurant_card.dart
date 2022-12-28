@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_delivery_app/common/const/colors.dart';
+import 'package:flutter_delivery_app/restaurant/model/restaurant_detail_model.dart';
 import 'package:flutter_delivery_app/restaurant/model/restaurant_model.dart';
 
 class RestaurantCard extends StatelessWidget {
@@ -27,6 +28,9 @@ class RestaurantCard extends StatelessWidget {
   // 상세 카드 여부
   final bool isDetail;
 
+  // Hero 위젯 태그
+  final String? heroKey;
+
   // 상세 내용용
   final String? detail;
 
@@ -40,15 +44,14 @@ class RestaurantCard extends StatelessWidget {
     required this.ratings,
     this.isDetail = false,
     this.detail,
+    this.heroKey,
     Key? key,
   }) : super(key: key);
 
   factory RestaurantCard.fromModel({
     required RestaurantModel model,
     bool isDetail = false,
-    String? detail,
   }) {
-
     print('restaurant card : ${model.thumbUrl}');
 
     return RestaurantCard(
@@ -56,6 +59,7 @@ class RestaurantCard extends StatelessWidget {
         model.thumbUrl,
         fit: BoxFit.cover,
       ),
+      heroKey: model.id,
       name: model.name,
       // Change to String List
       // List<dynamic> -> List<String>.from
@@ -64,8 +68,8 @@ class RestaurantCard extends StatelessWidget {
       deliveryTime: model.deliveryTime,
       deliveryFee: model.deliveryFee,
       ratings: model.ratings,
-      detail: detail,
       isDetail: isDetail,
+      detail: model is RestaurantDetailModel ? model.detail : null,
     );
   }
 
@@ -73,12 +77,19 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        isDetail
-            ? image
-            : ClipRRect(
-                borderRadius: BorderRadius.circular(12.0),
-                child: image,
-              ),
+        if (heroKey != null)
+          Hero(
+            tag: ObjectKey(heroKey),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+              child: image,
+            ),
+          ),
+        if (heroKey == null)
+          ClipRRect(
+            borderRadius: BorderRadius.circular(isDetail ? 0 : 12.0),
+            child: image,
+          ),
         const SizedBox(height: 16.0),
         Padding(
           padding: EdgeInsets.symmetric(

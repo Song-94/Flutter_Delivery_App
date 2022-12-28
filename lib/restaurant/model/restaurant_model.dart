@@ -1,4 +1,5 @@
 import 'package:flutter_delivery_app/common/const/restaurant_price.dart';
+import 'package:flutter_delivery_app/common/model/model_with_id.dart';
 import 'package:flutter_delivery_app/common/utils/data_utils.dart';
 
 import 'package:json_annotation/json_annotation.dart';
@@ -6,7 +7,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'restaurant_model.g.dart';
 
 @JsonSerializable()
-class RestaurantModel {
+class RestaurantModel implements IModelWithId {
   final String id;
   final String name;
 

@@ -191,7 +191,7 @@ this.includeIfNull, this.converters, this.genericArgumentFactories, });
 
 # extends & implements
 
-extends 와 implement s는 구현 내용에서도 차이가 있습니다. extends 를 통해 상속을 하는 경우에는 클래스의 모든 내용을 재정의할 필요가 없지만
+extends 와 implements 는 구현 내용에서도 차이가 있습니다. extends 를 통해 상속을 하는 경우에는 클래스의 모든 내용을 재정의할 필요가 없지만
 implements 를 통해 인터페이스를 구현하는 경우에는 클래스의 모든 내용을 빠짐 없이 구현해야 합니다.
 
 - implement :
@@ -214,3 +214,12 @@ implements 를 통해 인터페이스를 구현하는 경우에는 클래스의 
 - extends 는 속성이나 메소드들도 모두 상속받기 때문에 하위 클래스에서 부모 클래스의 메소드들을 특별한 구현없이 바로 사용 가능.
 - implements 는 여러 부모 클래스를 가질 수 있었지만, 인터페이스의 구현과 마찬가지로 하위 클래스에서 모든 메소드를 오버라이딩으로 구현 필수.
 - with 는 여러 개의 부모 클래스를 가질 수 있으며, 각 메소드를 일일이 구현하지 않더라도 부모에서 구현된 메소드 호출을 할 수 있음.
+
+# dependency_overrides
+- 패키지 마다 각각 종속 된 라이브러리를 해결 할 수 있는 임시방편 방법.
+- 충돌 된 패키지 중 낮은 버전으로 오버라이딩으로 임시 방편으로 컴파일 가능함
+- 언제 터질지 모르는 시한 폭탄.
+
+# 'package:collection/collection.dart';
+- map 함수에 index 사용이 가능해짐
+- images.mapIndexed((e, index) {});
