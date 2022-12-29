@@ -4,6 +4,10 @@ part 'cursor_pagination_model.g.dart';
 
 abstract class CursorPaginationBase {}
 
+// 새로고침 할 때. (데이터가 없음. 완전 처음 상태 로딩)
+class CursorPaginationLoading extends CursorPaginationBase {}
+
+// 에러
 class CursorPaginationError extends CursorPaginationBase {
   final String message;
 
@@ -12,9 +16,7 @@ class CursorPaginationError extends CursorPaginationBase {
   });
 }
 
-// 새로고침 할 때. (데이터가 없음. 완전 처음 상태 로딩)
-class CursorPaginationLoading extends CursorPaginationBase {}
-
+// 정상적으로 데이터 받음.
 @JsonSerializable(
   genericArgumentFactories: true,
 )

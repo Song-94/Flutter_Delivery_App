@@ -31,6 +31,9 @@ class RatingCard extends StatelessWidget {
   factory RatingCard.fromModel({
     required RatingModel model,
   }) {
+
+    print('rating card : ${model.imgUrls}');
+
     return RatingCard(
       avatarImage: NetworkImage(
         model.user.imageUrl,

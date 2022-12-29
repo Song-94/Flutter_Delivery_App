@@ -36,6 +36,7 @@ abstract class RestaurantRatingRepository
     },
   )
 
+  @override
   Future<CursorPagination<RatingModel>> paginate({
     @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });

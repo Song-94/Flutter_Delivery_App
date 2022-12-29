@@ -6,9 +6,12 @@ import 'package:flutter_delivery_app/common/repository/base_pagination_repositor
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // 제너릭 타입에 'extends' 를 통한 상속만 가능하다
-class PaginationProvider<T extends IModelWithId,
-        U extends IBasePaginationRepository<T>>
-    extends StateNotifier<CursorPaginationBase> {
+class PaginationProvider
+< T extends IModelWithId,
+  U extends IBasePaginationRepository<T>
+>
+  extends StateNotifier<CursorPaginationBase> {
+
   final U repository;
 
   PaginationProvider({
