@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery_app/common/provider/go_router.dart';
 import 'package:flutter_delivery_app/common/view/splash_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,23 +9,28 @@ void main() async {
   // await GetIt.I<NetworkIp>().getIpWiFi();
 
   runApp(
-    ProviderScope(
-      child: const _App(),
+    const ProviderScope(
+      child: _App(),
     ),
   );
 }
 
-class _App extends StatelessWidget {
-  const _App({Key? key}) : super(key: key);
+class _App extends ConsumerWidget {
+  const _App({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
+  Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvider);
+    return MaterialApp.router(
       theme: ThemeData(
         fontFamily: 'NotoSans',
       ),
-      home: const SplashScreen(),
+      debugShowCheckedModeBanner: false,
+      routerDelegate: router.routerDelegate,
+      routeInformationParser: router.routeInformationParser,
+      routeInformationProvider: router.routeInformationProvider,
     );
   }
 }

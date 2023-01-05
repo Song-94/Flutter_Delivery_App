@@ -5,14 +5,11 @@ import 'package:flutter_delivery_app/common/provider/pagination_provider.dart';
 import 'package:flutter_delivery_app/common/utils/pagination_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
-  BuildContext context,
-  int index,
-  T model,
-);
-
 // <T extends aClass>
 // 제너릭 된 T는 aClass 를 상속하고 있어야 가능하다.
+
+typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
+    BuildContext context, int index, T model);
 
 class PaginationListView<T extends IModelWithId>
     extends ConsumerStatefulWidget {
@@ -52,7 +49,6 @@ class _PaginationListViewState<T extends IModelWithId>
     super.initState();
     controller.addListener(listener);
   }
-
 
   @override
   void dispose() {

@@ -2,17 +2,20 @@ import 'package:dio/dio.dart';
 import 'package:flutter_delivery_app/common/const/data.dart';
 import 'package:flutter_delivery_app/common/secure_storage/secure_storage.dart';
 import 'package:flutter_delivery_app/device/wifi.dart';
+import 'package:flutter_delivery_app/user/provider/auth_provider.dart';
+import 'package:flutter_delivery_app/user/provider/user_me_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 final dioProvider = Provider<Dio>(
-  (ref) {
+      (ref) {
     final dio = Dio();
     final storage = ref.watch(secureStorageProvider);
 
     dio.interceptors.add(
       CustomInterceptor(
         storage: storage,
+        ref: ref,
       ),
     );
     return dio;
@@ -21,9 +24,11 @@ final dioProvider = Provider<Dio>(
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   CustomInterceptor({
     required this.storage,
+    required this.ref,
   });
 
   // 1) 요청 보낼 때
@@ -33,10 +38,8 @@ class CustomInterceptor extends Interceptor {
   // 헤더를 변경한다.
 
   @override
-  void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
+  void onRequest(RequestOptions options,
+      RequestInterceptorHandler handler,) async {
     print('[REQ]\n'
         'method: ${options.method}\n'
         'uri: ${options.uri}\n'
@@ -73,10 +76,8 @@ class CustomInterceptor extends Interceptor {
 
   // 2) 응답을 받을 때
   @override
-  void onResponse(
-    Response response,
-    ResponseInterceptorHandler handler,
-  ) {
+  void onResponse(Response response,
+      ResponseInterceptorHandler handler,) {
     print('[RES]\n'
         'method: ${response.requestOptions.method}\n'
         'uri: ${response.requestOptions.uri}\n'
@@ -86,10 +87,8 @@ class CustomInterceptor extends Interceptor {
 
   // 3) 에러가 났을 때
   @override
-  void onError(
-    DioError err,
-    ErrorInterceptorHandler handler,
-  ) async {
+  void onError(DioError err,
+      ErrorInterceptorHandler handler,) async {
     // 401 에러가 났을 때 (status code)
     // 토큰을 재발급 받는 시도를하고 토큰이 재발급 되면
     // 다시 새로운 토큰으로 요청을 한다.
@@ -134,8 +133,20 @@ class CustomInterceptor extends Interceptor {
 
         return handler.resolve(response);
       } on DioError catch (e) {
-        return handler.reject(err);
+        // circular dependency error
+        // => A, B
+        // A -> B 의 친구
+        // B -> A 의 친구
+        // A는 B의 친구구나
+        // A -> B -> A -> B -> A .....
+        // userMeProvider -> dio -> ump -> dio .....
+
+        ref.read(authProvider.notifier).logout();
+
+        return handler.reject(e);
       }
     }
+
+    return handler.reject(err);
   }
 }

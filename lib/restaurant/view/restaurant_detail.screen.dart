@@ -1,7 +1,12 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_delivery_app/common/const/colors.dart';
 import 'package:flutter_delivery_app/common/utils/pagination_utils.dart';
+import 'package:flutter_delivery_app/product/model/product_model.dart';
+import 'package:flutter_delivery_app/restaurant/view/basket_screen.dart';
+import 'package:flutter_delivery_app/user/provider/basket_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_svg_provider/flutter_svg_provider.dart' as svg_provider;
+import 'package:go_router/go_router.dart';
 import 'package:skeletons/skeletons.dart';
 
 import 'package:flutter_delivery_app/common/layout/default_layout.dart';
@@ -18,6 +23,8 @@ import 'package:flutter_delivery_app/restaurant/provider/restaurant_rating_provi
 import 'package:flutter_delivery_app/restaurant/repository/restaurant_repository.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'restaurantDetail';
+
   final String id;
 
   const RestaurantDetailScreen({
@@ -54,6 +61,7 @@ class _RestaurantDetailScreenState
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
     final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
+    final basket = ref.watch(basketProvider);
 
     if (state == null) {
       return const DefaultLayout(
@@ -65,6 +73,34 @@ class _RestaurantDetailScreenState
 
     return DefaultLayout(
       title: '불타는 떡볶이',
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // .goName   : Routing 한 Nesting 을 그대로 사용
+          //             즉 Route 에 해당 된 상위 route 만 이동 가능함.
+          // .pushName : 현재 route 위에 요청한 route 를 올려서 뒤로가기가 활성화.
+
+          // context.goNamed(BasketScreen.routeName);
+          context.pushNamed(BasketScreen.routeName);
+        },
+        backgroundColor: PRIMARY_COLOR,
+        child: Badge(
+          showBadge: basket.isNotEmpty,
+          badgeContent: Text(
+            basket
+                .fold<int>(
+                  0,
+                  (previous, next) => previous + next.count,
+                )
+                .toString(),
+            style: const TextStyle(
+              color: PRIMARY_COLOR,
+              fontSize: 14.0,
+            ),
+          ),
+          badgeColor: Colors.white,
+          child: const Icon(Icons.shopping_basket_outlined),
+        ),
+      ),
       child: CustomScrollView(
         controller: controller,
         slivers: [
@@ -75,6 +111,7 @@ class _RestaurantDetailScreenState
           if (state is RestaurantDetailModel) renderLabel(),
           if (state is RestaurantDetailModel)
             renderProducts(
+              restaurant: state,
               products: state.products,
             ),
           if (ratingsState is CursorPagination<RatingModel>)
@@ -155,6 +192,7 @@ class _RestaurantDetailScreenState
   }
 
   Widget renderProducts({
+    required RestaurantModel restaurant,
     required List<RestaurantProductModel> products,
   }) {
     return SliverPadding(
@@ -163,9 +201,24 @@ class _RestaurantDetailScreenState
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final model = products[index];
-            return Padding(
-              padding: const EdgeInsets.only(top: 16.0),
-              child: ProductCard.fromRestaurantProductModel(model: model),
+
+            return InkWell(
+              onTap: () {
+                ref.read(basketProvider.notifier).addToBasket(
+                      product: ProductModel(
+                        id: model.id,
+                        name: model.name,
+                        detail: model.detail,
+                        imgUrl: model.imgUrl,
+                        price: model.price,
+                        restaurant: restaurant,
+                      ),
+                    );
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: ProductCard.fromRestaurantProductModel(model: model),
+              ),
             );
           },
           childCount: products.length,

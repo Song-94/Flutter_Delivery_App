@@ -37,12 +37,32 @@ class RestaurantStateNotifier
     final pState = state as CursorPagination;
     final resp = await repository.getRestaurantDetail(id: id);
 
-    state = pState.copyWith(
-      data: pState.data
-          .map<RestaurantModel>(
-            (e) => (e.id == id) ? resp : e,
-          )
-          .toList(),
-    );
+    // [RestaurantModel(1), RestaurantModel(2), RestaurantModel(3)]
+    // 요청 id : 10
+    // list.where((e) => e.id == 10)) 데이터 없음
+    // => error
+    // 데이터가 없을 때는 그냥 캐시의 끝에 데이터를 추가해버린다.
+    // [RestaurantModel(10)]
+
+    if (pState.data.where((e) => e.id == id).isEmpty) {
+      state = pState.copyWith(
+        data: <RestaurantModel>[
+          ...pState.data,
+          resp,
+        ],
+      );
+    } else {
+      // id : 2인 친구들 Detail 모델을 가져오기
+      // getDetail(id: 2);
+      //
+
+      state = pState.copyWith(
+        data: pState.data
+            .map<RestaurantModel>(
+              (e) => (e.id == id) ? resp : e,
+            )
+            .toList(),
+      );
+    }
   }
 }

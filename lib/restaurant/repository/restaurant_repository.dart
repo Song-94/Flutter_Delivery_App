@@ -10,6 +10,8 @@ import 'package:flutter_delivery_app/restaurant/provider/restaurant_provider.dar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
 
+import 'package:collection/collection.dart';
+
 part 'restaurant_repository.g.dart';
 
 // .family<A, B> (ref, data)
@@ -26,7 +28,11 @@ final restaurantDetailProvider = Provider.family<RestaurantModel?, String>(
       return null;
     }
 
-    return state.data.firstWhere(
+    // firstWhere 문제점
+    // => 만약에 element 가 존재하지 않으면 error
+    // firstWhereOrNull
+    // => 만약에 element 가 존재하지 않으면 null 리턴
+    return state.data.firstWhereOrNull(
       (element) {
         return element.id == id;
       },

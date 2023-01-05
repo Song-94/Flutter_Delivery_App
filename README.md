@@ -62,6 +62,10 @@
 
 - FutureBuilder, StreamBuilder 데이터를 한번 요청하여 소유하고 있는 데이터가 있으면 데이터를 소유하고 있음.
 
+
+9. onPressed of ElevatedButton
+- 버튼이 회색으로 변하면서 누를 수 없게끔 변한다.
+
 # Code Generation
 
 - flutter pub run build_runner (cmd)
@@ -223,3 +227,17 @@ implements 를 통해 인터페이스를 구현하는 경우에는 클래스의 
 # 'package:collection/collection.dart';
 - map 함수에 index 사용이 가능해짐
 - images.mapIndexed((e, index) {});
+
+# QueryParams
+- Web 이 아닌 App 에서 Route 구성 시 QueryParams 는 지양한다.
+
+# GestureDetector, Inkwell
+- Inkwell 은 잉크가 퍼지는 듯한 애니메이션 효과 존재
+- GestureDetector 는 아무런 애니메이션 효과 없음
+- 화면이 이동하는 경우 GestureDetector
+- 화면이 이동하지 않는 경우 Inkwell
+
+# Optimistic Response (긍정적 응답)
+- 서버에서 요청을 보내고 기다리는 것이 아니라,
+  요청은 성공한다는 가정 하에, 먼저 상태를 업데이트 하여
+  UX를 개선한다.

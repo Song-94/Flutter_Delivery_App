@@ -3,9 +3,14 @@ import 'package:flutter_delivery_app/common/const/colors.dart';
 import 'package:flutter_delivery_app/common/layout/default_layout.dart';
 import 'package:flutter_delivery_app/product/view/product_screen.dart';
 import 'package:flutter_delivery_app/restaurant/view/restaurant_screen.dart';
+import 'package:flutter_delivery_app/user/view/profile_screen.dart';
 
 class RootTab extends StatefulWidget {
-  const RootTab({Key? key}) : super(key: key);
+  const RootTab({
+    Key? key,
+  }) : super(key: key);
+
+  static String get routeName => 'home';
 
   @override
   State<RootTab> createState() => _RootTabState();
@@ -39,7 +44,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return DefaultLayout(
-      title: '코팩 딜리버리',
+      title: '신속 배달.',
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMARY_COLOR,
         unselectedItemColor: BODY_TEXT_COLOR,
@@ -82,7 +87,7 @@ class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
           RestaurantScreen(),
           ProductScreen(),
           Center(child: Text('주문')),
-          Center(child: Text('프로필')),
+          ProfileScreen(),
         ],
       ),
     );

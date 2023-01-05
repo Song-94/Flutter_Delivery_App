@@ -10,6 +10,7 @@ class ProductModel implements IModelWithId {
   final String id;
   final String name; // 상품 이름
   final String detail; // 상품 상세 정보
+
   @JsonKey(
     // fromJson 함수 실행 시 실행 할 함수 지정.
     fromJson: DataUtils.pathToUrl,
