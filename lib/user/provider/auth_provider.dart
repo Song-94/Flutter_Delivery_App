@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_delivery_app/common/view/root_tab.dart';
 import 'package:flutter_delivery_app/common/view/splash_screen.dart';
+import 'package:flutter_delivery_app/order/view/order_done_screen.dart';
 import 'package:flutter_delivery_app/restaurant/view/basket_screen.dart';
 import 'package:flutter_delivery_app/restaurant/view/restaurant_detail.screen.dart';
 import 'package:flutter_delivery_app/user/model/user_model.dart';
@@ -52,6 +53,11 @@ class AuthProvider extends ChangeNotifier {
           path: '/basket',
           name: BasketScreen.routeName,
           builder: (_, state) => BasketScreen(),
+        ),
+        GoRoute(
+          path: '/order_done',
+          name: OrderDoneScreen.routeName,
+          builder: (_, state) => OrderDoneScreen(),
         ),
         GoRoute(
           path: '/splash',
