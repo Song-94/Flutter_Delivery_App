@@ -1,3 +1,4 @@
+import 'package:debounce_throttle/debounce_throttle.dart';
 import 'package:flutter_delivery_app/common/model/cursor_pagination_model.dart';
 import 'package:flutter_delivery_app/common/model/model_with_id.dart';
 import 'package:flutter_delivery_app/common/model/pagination_params.dart';
@@ -5,19 +6,41 @@ import 'package:flutter_delivery_app/common/repository/base_pagination_repositor
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-// 제너릭 타입에 'extends' 를 통한 상속만 가능하다
-class PaginationProvider
-< T extends IModelWithId,
-  U extends IBasePaginationRepository<T>
->
-  extends StateNotifier<CursorPaginationBase> {
+class _PaginationInfo {
+  final int fetchCount;
+  final bool fetchMore;
+  final bool forceRefetch;
 
+  _PaginationInfo({
+    this.fetchCount = 20,
+    this.fetchMore = false,
+    this.forceRefetch = false,
+  });
+}
+
+// 제너릭 타입에 'extends' 를 통한 상속만 가능하다
+class PaginationProvider<T extends IModelWithId,
+        U extends IBasePaginationRepository<T>>
+    extends StateNotifier<CursorPaginationBase> {
   final U repository;
+
+  final paginationThrottle = Throttle(
+    const Duration(seconds: 5),
+    initialValue: _PaginationInfo(),
+    checkEquality: false, // 함수 실행 시 넣는 값이 똑같을 때 재 실행 여부.
+  );
 
   PaginationProvider({
     required this.repository,
   }) : super(CursorPaginationLoading()) {
     paginate();
+
+    // .setValue 실행 시 .listen 이 실행된다.
+    paginationThrottle.values.listen(
+      (state) {
+        _throttledPagination(state);
+      },
+    );
   }
 
   Future<void> paginate({
@@ -48,6 +71,22 @@ class PaginationProvider
     bool fetchMore = false,
     bool forceRefetch = false,
   }) async {
+    paginationThrottle.setValue(
+      _PaginationInfo(
+        fetchMore: fetchMore,
+        fetchCount: fetchCount,
+        forceRefetch: forceRefetch,
+      ),
+    );
+  }
+
+  void _throttledPagination(
+    _PaginationInfo info,
+  ) async {
+    final int fetchCount = info.fetchCount;
+    final bool fetchMore = info.fetchMore;
+    final bool forceRefetch = info.forceRefetch;
+
     try {
       // 바로 반환하는 상황 ---------------------------------------------------------
       if (state is CursorPagination && !forceRefetch) {

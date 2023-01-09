@@ -64,6 +64,7 @@
 
 
 9. onPressed of ElevatedButton
+
 - 버튼이 회색으로 변하면서 누를 수 없게끔 변한다.
 
 # Code Generation
@@ -220,24 +221,34 @@ implements 를 통해 인터페이스를 구현하는 경우에는 클래스의 
 - with 는 여러 개의 부모 클래스를 가질 수 있으며, 각 메소드를 일일이 구현하지 않더라도 부모에서 구현된 메소드 호출을 할 수 있음.
 
 # dependency_overrides
+
 - 패키지 마다 각각 종속 된 라이브러리를 해결 할 수 있는 임시방편 방법.
 - 충돌 된 패키지 중 낮은 버전으로 오버라이딩으로 임시 방편으로 컴파일 가능함
 - 언제 터질지 모르는 시한 폭탄.
 
 # 'package:collection/collection.dart';
+
 - map 함수에 index 사용이 가능해짐
 - images.mapIndexed((e, index) {});
 
 # QueryParams
+
 - Web 이 아닌 App 에서 Route 구성 시 QueryParams 는 지양한다.
 
 # GestureDetector, Inkwell
+
 - Inkwell 은 잉크가 퍼지는 듯한 애니메이션 효과 존재
 - GestureDetector 는 아무런 애니메이션 효과 없음
 - 화면이 이동하는 경우 GestureDetector
 - 화면이 이동하지 않는 경우 Inkwell
 
 # Optimistic Response (긍정적 응답)
-- 서버에서 요청을 보내고 기다리는 것이 아니라,
-  요청은 성공한다는 가정 하에, 먼저 상태를 업데이트 하여
-  UX를 개선한다.
+
+- 서버에서 요청을 보내고 기다리는 것이 아니라, 요청은 성공한다는 가정 하에, 먼저 상태를 업데이트 하여 UX를 개선한다.
+
+# Debounce & Throttle
+
+- debounce : 마지막 이벤트가 발생한 후 제한 시간이 지나기 전까지 이벤트가 발생하지 않아야 비로소 실행합니다.
+- throttle : 시간 제한 내의 마지막 이벤트가 발생하는 겁니다.
+- https://rxmarbles.com/
+- https://darrengwon.tistory.com/1312
