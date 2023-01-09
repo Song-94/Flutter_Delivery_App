@@ -1,5 +1,8 @@
 # flutter_delivery_app
 
+- The output is in the samples folder
+
+
 # Android studio
 
 1. File Nesting
